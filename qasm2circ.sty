@@ -8,7 +8,7 @@
 \NewDocumentEnvironment{qasm}{}
     {\VerbatimOut{\theqasmindex-inline.tmp.qasm}}
     {\endVerbatimOut
-    \immediate\write18{python qasm2tex.py \theqasmindex-inline.tmp.qasm > \theqasmindex-inline.tmp.qasm.tex 2>\theqasmindex-inline.tmp.qasm.gen.log}
+    \immediate\write18{python2 qasm2tex.py \theqasmindex-inline.tmp.qasm > \theqasmindex-inline.tmp.qasm.tex 2>\theqasmindex-inline.tmp.qasm.gen.log}
     \immediate\write18{pdflatex \theqasmindex-inline.tmp.qasm.tex}
     \immediate\write18{pdfcrop \theqasmindex-inline.tmp.qasm.pdf \theqasmindex-inline.tmp.qasm-crop.pdf}
     \includegraphics[valign=c, max width=\textwidth, max height=0.2\textheight]{\theqasmindex-inline.tmp.qasm-crop.pdf}
@@ -18,7 +18,7 @@
 \NewDocumentEnvironment{defqasm}{o}
     {\VerbatimOut{#1-def.tmp.qasm}}
     {\endVerbatimOut
-    \immediate\write18{python qasm2tex.py #1-def.tmp.qasm > #1-def.tmp.qasm.tex 2>#1-def.tmp.qasm.gen.log}
+    \immediate\write18{python2 qasm2tex.py #1-def.tmp.qasm > #1-def.tmp.qasm.tex 2>#1-def.tmp.qasm.gen.log}
     \immediate\write18{pdflatex #1-def.tmp.qasm.tex}
     \immediate\write18{pdfcrop #1-def.tmp.qasm.pdf #1-def.tmp.qasm-crop.pdf}
     }
