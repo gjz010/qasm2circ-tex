@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{qasm2circ}[2020/03/03 1.0.0 QASM2circ template]
+\usepackage{graphicx,float,wrapfig}
+\usepackage[export]{adjustbox} % loads also graphicx
+\usepackage{fancyvrb,xparse,listings}
+\newcounter{qasmindex}
+
+\NewDocumentEnvironment{qasm}{}
+    {\VerbatimOut{\theqasmindex-inline.tmp.qasm}}
+    {\endVerbatimOut
+    \immediate\write18{python qasm2tex.py \theqasmindex-inline.tmp.qasm > \theqasmindex-inline.tmp.qasm.tex 2>\theqasmindex-inline.tmp.qasm.gen.log}
+    \immediate\write18{pdflatex \theqasmindex-inline.tmp.qasm.tex}
+    \immediate\write18{pdfcrop \theqasmindex-inline.tmp.qasm.pdf \theqasmindex-inline.tmp.qasm-crop.pdf}
+    \includegraphics[valign=c, max width=\textwidth, max height=0.2\textheight]{\theqasmindex-inline.tmp.qasm-crop.pdf}
+    \stepcounter{qasmindex}
+    }
+
+\NewDocumentEnvironment{defqasm}{o}
+    {\VerbatimOut{#1-def.tmp.qasm}}
+    {\endVerbatimOut
+    \immediate\write18{python qasm2tex.py #1-def.tmp.qasm > #1-def.tmp.qasm.tex 2>#1-def.tmp.qasm.gen.log}
+    \immediate\write18{pdflatex #1-def.tmp.qasm.tex}
+    \immediate\write18{pdfcrop #1-def.tmp.qasm.pdf #1-def.tmp.qasm-crop.pdf}
+    }
+
+\newcommand{\useqasm}[1]{\includegraphics[valign=c, max width=\textwidth, max height=0.2\textheight]{#1-def.tmp.qasm-crop.pdf}}
+\newcommand{\useqasmpdf}[1]{#1-def.tmp.qasm-crop.pdf}
+
+\endinput
